@@ -1,15 +1,20 @@
-#setwd("C:/Users/Usuari/Documents/MESIO/R and SAS/R/TREBALL")
+setwd("C:/Users/Usuari/Documents/MESIO/R and SAS/R/TREBALL")
 #setwd("")
 #setwd("")
 #install.packages("readxl")
 #install.packages("httr")
+#install.packages("cowplot")
 
 # libraries
 library(readxl)
 library(httr)
 library(Hmisc)
+library(tidyverse)
+library(grid)
+library(gridExtra)
+library(cowplot)
 
-# Read the excel file
+# a) Read the excel file
 url_data <- "https://github.com/owid/co2-data/raw/master/owid-co2-data.xlsx"
 GET(url_data, write_disk(TF_data <- tempfile(fileext = ".xlsx")))
 Greenhouse_Gas_Emissions <- read_excel(TF_data)
@@ -19,8 +24,27 @@ GET(url_descr, write_disk(TF_descr <- tempfile(fileext = ".csv")))
 Greenhouse_descr <- read.csv(TF_descr)
 
 
-#ETIQUETAR LES VARIABLES:
+# b) ETIQUETAR LES VARIABLES:
 # !!! S'etiqueten per ordre, però no es comprova que el nom de la variable correspongui amb el nom de l'etiqueta!
 var.labels <- Greenhouse_descr
 label(Greenhouse_Gas_Emissions) = as.list(var.labels[,2])
 label(Greenhouse_Gas_Emissions)
+
+# c) Dimension of the dataframe
+print(paste0("In this dataset there are ", dim(Greenhouse_Gas_Emissions)[1], " observations of ", dim(Greenhouse_Gas_Emissions)[2], " variables related to the Greenhouse effect gas emitions"))
+#Vol que fem una descripció de cada variable??? :-S
+
+# d)Represent graphically co2, methane and nitrous oxide together by country and year. Can be possible all countries or a selection of a country, according to the request made.
+#Filter the top 25% most polluting countries
+not_countries <- c("Africa", "Asia", "Asia (excl. China & India)", "EU-27", "EU-28", "Europe", "Europe (excl. EU-27)", "Europe (excl. EU-28)", "International transport", "Kuwaiti Oil Fires", "Oceania", "North America", "North America (excl. USA)", "South America", "World" )
+Quart <- Greenhouse_Gas_Emissions %>%
+  select(country, co2, methane, nitrous_oxide, year) %>%
+  filter(year >= 2010 & !(country %in% not_countries)) %>%
+  summarise(qco2 = quantile (co2, probs = seq(0.8, 1, 0.05), na.rm = TRUE))
+
+Greenhouse_Gas_Emissions %>%
+  select(country, co2, methane, nitrous_oxide, year) %>%
+  filter(year >= 1970, co2 >= as.numeric(Quart[3,]) & !(country %in% not_countries)) %>%
+   ggplot() + 
+     geom_line(aes(x = year, y = co2, color = country)) #+
+     #theme(legend.position = "none")
