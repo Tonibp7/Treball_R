@@ -19,12 +19,8 @@ GET(url_descr, write_disk(TF_descr <- tempfile(fileext = ".csv")))
 Greenhouse_descr <- read.csv(TF_descr)
 
 
-#ETIQUETAR LES VARIABLES (dona un error):
-
-# (var.labels = Greenhouse_descr$source)
-# 
-# label(Greenhouse_Gas_Emissions) = as.list(var.labels[match(names(Greenhouse_Gas_Emissions), names(var.labels))])
-# 
-# label(Greenhouse_Gas_Emissions)
-# 
-# Greenhouse_Gas_Emissions <- Hmisc::upData(Greenhouse_Gas_Emissions, labels = var.labels)
+#ETIQUETAR LES VARIABLES:
+# !!! S'etiqueten per ordre, però no es comprova que el nom de la variable correspongui amb el nom de l'etiqueta!
+var.labels <- Greenhouse_descr
+label(Greenhouse_Gas_Emissions) = as.list(var.labels[,2])
+label(Greenhouse_Gas_Emissions)
