@@ -48,3 +48,13 @@ Greenhouse_Gas_Emissions %>%
    ggplot() + 
      geom_line(aes(x = year, y = co2, color = country)) #+
      #theme(legend.position = "none")
+
+
+# e) Aggregate data-frame by decade and select data only by 3 last decades 
+#(1990-2000, 2000-2010, 2010-2020)
+
+Greenhouse_Gas_Emissions <- Greenhouse_Gas_Emissions %>%
+  mutate(decade = paste0(year  %/% 10 * 10, "-", (year + 10) %/% 10 * 10 ))
+
+last_decade <- Greenhouse_Gas_Emissions %>%
+  filter(decade %in% c("1990-2000", "2000-2010", "2010-2020"))
