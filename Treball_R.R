@@ -73,8 +73,9 @@ mean_last_decad <- last_decades %>%
 # g) Properly represent the data to be able to see the decade variations of the average co2,methane and
 # nitrous oxide in the total countries and country by country (maybe a selection of ten with more co2production).
 
-ggplot(data = mean_last_decad) + 
-  geom_point(aes(x= decade, y= co2))
+ggplot(data = mean_last_decad, aes(x= decade, y= co2)) + 
+  geom_line() +
+  geom_point()
 
 # Com es connecten els punts entre ells?
 
