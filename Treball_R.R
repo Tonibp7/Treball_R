@@ -33,7 +33,7 @@ label(Greenhouse_Gas_Emissions)
 
 # c) Dimension of the dataframe
 print(paste0("In this dataset there are ", dim(Greenhouse_Gas_Emissions)[1], " observations of ", dim(Greenhouse_Gas_Emissions)[2], " variables related to the Greenhouse effect gas emitions"))
-#Vol que fem una descripció de cada variable??? :-S
+#Vol que fem una descripció analitica?.
 
 # d)Represent graphically co2, methane and nitrous oxide together by country and year. Can be possible all countries or a selection of a country, according to the request made.
 #Filter the top 25% most polluting countries
@@ -66,6 +66,7 @@ Greenhouse_Gas_Emissions <- Greenhouse_Gas_Emissions %>%
 
 last_decades <- Greenhouse_Gas_Emissions %>%
   filter(decade %in% c("1990-2000", "2000-2010", "2010-2020"))
+
 # f) Calculate the mean, median, standard deviation and the interquartile range for each of the previous
 # groups (or other statistics if necessary) for all quantitative variables (co2, co2 per-capita, ...). You
 # can present other statistics suitable for this type of data, which you think are convenient.
@@ -111,8 +112,6 @@ for (row in 1:nrow(top_co2_countries)) {
 }
 
 # do the same for the other metrics
-
-
 
 
 # EXERCISE 2
